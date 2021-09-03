@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    tools:context=".ui.TestActivity">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="20dp"
+        android:background="#eee"
+        android:gravity="center"
+        android:onClick="sendGlobal"
+        android:text="发送全局数据"
+        android:textColor="#111" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="20dp"
+        android:background="#eee"
+        android:gravity="center"
+        android:onClick="sendActivity"
+        android:text="发送Activity数据"
+        android:textColor="#111" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="20dp"
+        android:background="#eee"
+        android:gravity="center"
+        android:onClick="to"
+        android:text="跳转下一个页面"
+        android:textColor="#111" />
+
+
+</LinearLayout>

@@ -3,7 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/work/retrofitHttp/A/src/main/res/layout/activity_test_aactivity.xml" value="0.3026041666666667" />
         <entry key="..\:/work/retrofitHttp/app/src/main/res/layout/activity_main.xml" value="0.17447916666666666" />
+        <entry key="..\:/work/retrofitHttp/app/src/main/res/layout/activity_test.xml" value="0.2" />
+        <entry key="..\:/work/retrofitHttp/app/src/main/res/layout/activity_test2.xml" value="0.3026041666666667" />
+        <entry key="..\:/work/retrofitHttp/app/src/main/res/layout/fragment_test.xml" value="0.3026041666666667" />
+        <entry key="..\:/work/retrofitHttp/moudleA/src/main/res/layout/activity_test.xml" value="0.22" />
+        <entry key="..\:/work/retrofitHttp/moydleB/src/main/res/layout/activity_test2.xml" value="0.3026041666666667" />
       </map>
     </option>
   </component>

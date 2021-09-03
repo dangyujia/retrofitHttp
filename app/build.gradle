@@ -59,7 +59,8 @@ dependencies {
     implementation project(path: ':lib')
     implementation project(path: ':moudleA')
     implementation project(path: ':moydleB')
-
+    implementation project(path: ':A')
+    implementation project(path: ':B')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

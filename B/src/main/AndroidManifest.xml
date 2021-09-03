@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.rain.rain.retrofit.moydleb">
+    package="com.rain.rain.retrofit.b">
 
     <application>
-        <activity android:name=".ui.TestBActivity" />
+        <activity
+            android:name=".TestBActivity"
+            android:exported="true" />
     </application>
+
 </manifest>

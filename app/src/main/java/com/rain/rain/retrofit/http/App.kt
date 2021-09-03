@@ -2,6 +2,7 @@ package com.rain.rain.retrofit.http
 
 import android.app.Application
 import android.content.Context
+import com.rain.rain.retrofit.lib.Comm
 import kotlin.properties.Delegates
 
 /**
@@ -17,6 +18,6 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         CONTEXT = applicationContext
-        com.rain.rain.retrofit.lib.Comm.setContext(this)
+        Comm.setContext(this)
     }
 }
