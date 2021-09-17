@@ -88,4 +88,21 @@ open class BaseViewModel : ViewModel() {
     }.flowOn(Dispatchers.IO).onCompletion {
         completion(Result.Loading(isLoading = false))
     }
+
+    /**
+     * 不通过BaseViewModel 直接向 ui发送数据
+     */
+    suspend inline fun <T : Any> Result<T>.request(
+        crossinline start: suspend (Result<T>) -> Unit,
+        crossinline completion: suspend (Result<T>) -> Unit
+    ) =
+        flow {
+            emit(this@request)
+        }.onStart {
+            start(Result.Loading(isLoading = true))
+        }.flowOn(Dispatchers.IO).onCompletion {
+            completion(Result.Loading(isLoading = false))
+        }
+
+
 }

@@ -1,5 +1,6 @@
 package com.rain.rain.retrofit.http.test
 
+import android.util.Log
 import com.rain.rain.retrofit.http.base.BaseRepository
 import com.rain.rain.retrofit.moudlea.ModelA2Dao
 import com.rain.rain.retrofit.moudlea.PinkerConfig
@@ -23,11 +24,23 @@ object Test2Repository : BaseRepository() {
 
     private suspend fun getRoomList() = ModelA2Dao.query()
 
-    suspend fun getDBList(): Result<MutableList<PinkerConfig>> = executeResponse(getRoomList())
+    suspend fun getDBList(): Result<MutableList<PinkerConfig>> = dbResponse(getRoomList())
 
     private fun getListAsync() = api.getListAsync()
 
-    suspend fun getNetList(): Result<MutableList<PinkerConfig>> = executeResponse(getListAsync())
+    suspend fun getNetList(): Result<MutableList<PinkerConfig>> = executeResponse(getListAsync()) {
+        Log.i("====Repository=====", "修改前的数据：$it")
+        Log.i("====Repository=====", "通过仓库修改数据 然后返回")
+        val list = mutableListOf<PinkerConfig>()
+        var index = 0
+        it.forEach { pinker ->
+            index++
+            list.add(PinkerConfig(pinker.id, pinker.name + index, pinker.price))
+        }
+        it.clear()
+        it.addAll(list)
+        Log.i("====Repository=====", "修改后的数据：$it")
+    }
 
     private fun basePinkerDataAsync() = api.basePinkerDataAsync()
 

@@ -27,37 +27,29 @@ open class BaseRepository {
 
     /**
      * 网络请求封装返回
+     *      block 返回数据操作
      */
     suspend fun <T : Any> executeResponse(
         response: Deferred<T>,
-        successBlock: (suspend CoroutineScope.() -> Unit)? = null,
-        errorBlock: (suspend CoroutineScope.() -> Unit)? = null
+        block: ((T) -> Unit)? = null,
     ): Result<T> {
-        return coroutineScope {
-            try {
-                val t = response.await()
-                successBlock?.let { it() }
-                Result.Success(t)
-            } catch (e: Exception) {
-                errorBlock?.let { it() }
-                Result.Error(IOException(e))
-            }
+        return try {
+            val await = response.await()
+            block?.apply { this(await) }
+            Result.Success(await)
+        } catch (e: Exception) {
+            Result.Error(IOException(e))
         }
     }
 
     /**
      * 数据库数据请求返回
      */
-    suspend fun <T : Any> executeResponse(
-        response: T,
-        successBlock: (suspend CoroutineScope.() -> Unit)? = null
-    ): Result<T> {
-        return coroutineScope {
-            val success = Result.Success(response)
-            success.requestType = 1
-            successBlock?.let { it() }
-            success
-        }
+    fun <T : Any> dbResponse(response: T, block: ((T) -> Unit)? = null): Result<T> {
+        val success = Result.Success(response)
+        success.requestType = 1
+        block?.apply { this(response) }
+        return success
     }
 
     /**
