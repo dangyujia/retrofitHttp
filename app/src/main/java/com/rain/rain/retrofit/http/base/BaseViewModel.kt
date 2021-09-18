@@ -69,6 +69,19 @@ open class BaseViewModel : ViewModel() {
             _stateFlow.value = Result.Loading(isLoading = false)
         }
 
+    inline fun <reified T : Any> Deferred<T>.request(
+        crossinline start: suspend (Result<T>) -> Unit,
+        crossinline error: suspend (Result<T>) -> Unit,
+        crossinline completion: suspend (Result<T>) -> Unit
+    ) = flow {
+        emit(this@request.await())
+    }.catch { t: Throwable ->
+        error(Result.Error(t))
+    }.onStart {
+        start(Result.Loading(isLoading = true))
+    }.flowOn(Dispatchers.IO).onCompletion {
+        completion(Result.Loading(isLoading = false))
+    }
 
     /**
      * 获取数据库数据 和 网络请求
@@ -104,5 +117,16 @@ open class BaseViewModel : ViewModel() {
             completion(Result.Loading(isLoading = false))
         }
 
+    /**
+     * 不通过BaseViewModel 直接向 ui发送数据
+     */
+    suspend inline fun <T : Any> Result<T>.request() =
+        flow {
+            emit(this@request)
+        }.onStart {
+            emit(Result.Loading(isLoading = true))
+        }.flowOn(Dispatchers.IO).onCompletion {
+            emit(Result.Loading(isLoading = false))
+        }
 
 }

@@ -61,12 +61,9 @@ class Test2ViewModel : BaseViewModel() {
                 _sharedFlow3.emit(result)
             }
         }
-//        viewModelScope.launch {
-//            Test2Repository.getListAsync().request(_sharedFlow1).collect { result ->
-//                _sharedFlow1.emit(Result.Success(result))
-//            }
-//        }
     }
+
+    suspend fun get3() = Test2Repository.getNetList().request()
 
     //merge 合并多个流成 一个流。 可以用在 多级缓存加载上 无序发送
     @ExperimentalCoroutinesApi

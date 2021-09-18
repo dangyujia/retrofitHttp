@@ -1,10 +1,12 @@
 package com.rain.rain.retrofit.http.base
 
+import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.coroutineScope
 import java.io.IOException
 import com.rain.rain.retrofit.http.test.KResult
+import retrofit2.HttpException
 
 /**
  *@Author: Rain
@@ -29,26 +31,47 @@ open class BaseRepository {
      * 网络请求封装返回
      *      block 返回数据操作
      */
-    suspend fun <T : Any> executeResponse(
+    protected suspend inline fun <reified T : Any> executeResponse(
         response: Deferred<T>,
-        block: ((T) -> Unit)? = null,
+        noinline block: ((T) -> Unit)? = null,
     ): Result<T> {
         return try {
             val await = response.await()
-            block?.apply { this(await) }
+            block?.apply { invoke(await) }
             Result.Success(await)
-        } catch (e: Exception) {
-            Result.Error(IOException(e))
+        } catch (e: Throwable) {
+            when (e) {
+                is HttpException -> {
+                    when (e.code()) {
+                        in 200..300 -> {
+
+                        }
+                        in 400..500 -> {
+                            
+                        }
+                        in 500..600 -> {
+
+                        }
+                    }
+                }
+                else -> {
+                    Result.Error(e)
+                }
+            }
+            Result.Error(e)
         }
     }
 
     /**
      * 数据库数据请求返回
      */
-    fun <T : Any> dbResponse(response: T, block: ((T) -> Unit)? = null): Result<T> {
+    protected inline fun <reified T : Any> dbResponse(
+        response: T,
+        noinline block: ((T) -> Unit)? = null
+    ): Result<T> {
         val success = Result.Success(response)
         success.requestType = 1
-        block?.apply { this(response) }
+        block?.apply { invoke(response) }
         return success
     }
 

@@ -4,13 +4,11 @@ import android.os.Handler
 import android.os.Looper
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import java.lang.reflect.Type
+import com.rain.rain.retrofit.http.base.Result
 
 /**
  *@Author: Rain
@@ -34,16 +32,19 @@ object GsonUtils {
         return gson as Gson
     }
 }
+
 //转Json
 inline fun <reified T> toJson(value: T): String {
     val adapter = MoshiUtils.getInstance().adapter(T::class.java)
     return adapter.toJson(value)
 }
+
 //解析类
 inline fun <reified T> String.fromJson(): T {
     val adapter = MoshiUtils.getInstance().adapter(T::class.java)
     return adapter.fromJson(this) ?: throw IllegalAccessException("解析异常.")
 }
+
 // 类相互转换 T to R
 inline fun <reified T, reified R> transform(to: T): R = toJson(to).fromJson()
 
@@ -69,4 +70,17 @@ fun postDelay(block: () -> Unit, delay: Long) {
 
 fun post(block: () -> Unit) {
     postDelay(block, 0)
+}
+
+//解析网络返回
+inline fun <reified T : Any> Result<T>.request(
+    success: (T) -> Unit,
+    loading: (Boolean) -> Unit,
+    error: (Throwable) -> Unit
+) {
+    when (this) {
+        is Result.Success -> success(data)
+        is Result.Loading -> loading(isLoading)
+        is Result.Error -> error(exception)
+    }
 }

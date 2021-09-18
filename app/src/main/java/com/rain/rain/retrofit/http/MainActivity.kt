@@ -124,7 +124,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun roomA(v: View) {
-        viewModel.get2()
+//        viewModel.get2()
+        viewModel.viewModelScope.launch {
+            viewModel.get3().collect { result ->
+                result.request(success = {
+                    Log.i("=============", "========== $it")
+                    findViewById<TextView>(R.id.tv_content).text = it.toString()
+                }, loading = {
+                    Log.i("=============", "isLoading = $it")
+                }, error = {
+                    Log.i("=============", "throwable = $it")
+                })
+            }
+        }
     }
 
     fun roomB(v: View) {
